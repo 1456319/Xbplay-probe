@@ -1,0 +1,53 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android)
+SHA1-Digest-Manifest: mo9pjaOU4Rngi9J8x/1ZFnxhMUk=
+X-Android-APK-Signed: 2, 3
+
+Name: AndroidManifest.xml
+SHA1-Digest: 0MekzsQjG8LATY0EVe//R3czdW8=
+
+Name: lib/arm64-v8a/libc++_shared.so
+SHA1-Digest: ZmOZjyKiNOlJyow7MJLBCNnxArk=
+
+Name: lib/arm64-v8a/libffmpegkit_abidetect.so
+SHA1-Digest: xbVAkgmMMZUJv/DXeY4r4P5/Ses=
+
+Name: lib/arm64-v8a/libfreebl3.so
+SHA1-Digest: o3wyL87DgLiTDt2fUZUXzmqOVUQ=
+
+Name: lib/arm64-v8a/libgkcodecs.so
+SHA1-Digest: 3mPBM3whfGr7ILi8Fpb9fVQh4wM=
+
+Name: lib/arm64-v8a/libipcclientcerts.so
+SHA1-Digest: SDM1Lch0VWYwOuaWtv2MfLz7Rdc=
+
+Name: lib/arm64-v8a/liblgpllibs.so
+SHA1-Digest: LPESqPZ8bKbmWH8Hn1kCi+P4Jdw=
+
+Name: lib/arm64-v8a/libmozavcodec.so
+SHA1-Digest: FY3P/fe/Oi6SiQZZi3HCWgP16kM=
+
+Name: lib/arm64-v8a/libmozavutil.so
+SHA1-Digest: /jT2dcVyCip+dri7niLMxetbqOA=
+
+Name: lib/arm64-v8a/libmozglue.so
+SHA1-Digest: T2+8JC+zc7RR2ZPCH9uuh9WoKhU=
+
+Name: lib/arm64-v8a/libnss3.so
+SHA1-Digest: XXXD/8IIre4JCYq01hTPXB8orlU=
+
+Name: lib/arm64-v8a/libnssckbi.so
+SHA1-Digest: O6W1bINBRmbb1x4W/2y2aS2Qak0=
+
+Name: lib/arm64-v8a/libplugin-container.so
+SHA1-Digest: /yiwDibTT0B+CcS7NeuWEaK9VX0=
+
+Name: lib/arm64-v8a/libsoftokn3.so
+SHA1-Digest: C7WrmLHLccIt2zAL3NdCUobvHbk=
+
+Name: lib/arm64-v8a/libxul.so
+SHA1-Digest: LyEOSIOEYgOWJ7mJ97o4hrqtY+s=
+
+Name: stamp-cert-sha256
+SHA1-Digest: Bs40BvDZ1xrbgQrPTD2x5w/NfHQ=
+
