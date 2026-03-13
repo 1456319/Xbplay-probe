@@ -1,3 +1,11 @@
 out_dir/
 jadx/
 jadx-1.4.7.zip
+jadx_output/
+jadx_output2/
+jadx/
+*.jar
+*.zip
+jadx_output3/
+jadx_output4/
+jadx_output5/
