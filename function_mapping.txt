@@ -13,6 +13,7 @@ This document classifies individual files and their likely purpose within the pr
 - Local physical controller handlers (`ControllerHandler.java`, `RumbleHelper.java`, `InputDeviceContext.java`): Interfaces with Android's `InputDevice` APIs to read physical gamepad inputs, apply rumble feedback, and package the inputs into Nano `ControllerPacket`s.
 
 ### Controller Configuration (`com/studio08/xbgamestream/ControllerSetup`)
+- `ControllerConfigActivity.java`: Activity to set up and configure physical controller mappings.
 
 ### Media Servers (Casting) (`com/studio08/xbgamestream/Servers`)
 - Media Servers (`FileServer.java`, `Xbox360FileServer.java`, `TvServer.java`): Built-in local HTTP or UPnP/DLNA servers used to host local files for casting to the Xbox Media Player.
@@ -23,8 +24,20 @@ This document classifies individual files and their likely purpose within the pr
 ### Home Screen Widgets (`com/studio08/xbgamestream/Widgets`)
 - `PowerWidgetProvider.java`, `RemoteWidgetProvider.java`: Android Home Screen widgets that allow users to power on/off the console or send basic media remote commands without opening the full app.
 
-### User Interface Fragments (`com/studio08/xbgamestream/ui`)
-- UI Fragments (`gamestream/GamestreamFragment.java`, `controller/ControllerFragment.java`, `remote/RemoteFragment.java`, etc.): The visual components of the application containing the views for streaming video, touch controls, and media casting interfaces.
+### User Interface Fragments (`com/studio08/xbgamestream/ui` and `databinding`)
+- `AndroidTvFragment.java`: UI for connecting and managing an Android TV target.
+- `ControllerBuilderFragment.java`, `ControllerBuilderViewModel.java`: Interface to customize the layout and appearance of on-screen virtual controls.
+- `ControllerFragment.java`, `ControllerViewModel.java`: Displays and manages the state of the default virtual on-screen game controller.
+- `MoreFeaturesFragment.java`: A menu for additional or premium features within the app.
+- `AudioCastFragment.java`, `CastMediaRemoteFragment.java`, `FileCastFragment.java`: Interfaces for selecting local media and controlling playback when casting to the console.
+- `GamestreamFragment.java`, `GamestreamViewModel.java`: The primary view that displays the live video feed during an active game streaming session.
+- `HomeFragment.java`, `HomeViewModel.java`: The main dashboard view presented to the user after login.
+- `MirrorCastFragment.java`: Interface for casting the entire Android device screen to the console.
+- `RemoteFragment.java`: Provides media remote controls (play, pause, navigation) acting as a virtual TV remote.
+- `TVCastFragment.java`: Dedicated interface for casting live TV streams or IPTV links.
+- `WidgetsFragment.java`: Interface explaining or managing the Android Home Screen widgets.
+- `XcloudFragment.java`: A web wrapper or deep link interface specifically for accessing Microsoft's xCloud game streaming service.
+- `databinding/*`: Generated classes by Android's Data Binding Library connecting the layout XML files to their respective Fragments/Activities.
 
 ### Video Format Conversion (`com/studio08/xbgamestream/Converter`)
 - `VideoFormatConverter.java`, `ConvertForegroundService.java`: Logic potentially used to transcode or convert local media files into a format compatible with the Xbox Media Player before casting.
@@ -54,6 +67,27 @@ This document classifies individual files and their likely purpose within the pr
 - Nano gamestream packet definitions (`send/`, `response/`): Classes for handshakes, control protocol messages, and formatting controller input frames (e.g., `InputFrame`, `VideoClientHandshake`).
 
 ### Nano Gamestream Components (`nano`)
+- `GameController.java`, `GameControllerButtonModel.java`: Models representing the state and inputs of the virtual or physical game controller for gamestreaming.
+
+### Application Root Activities (`com/studio08/xbgamestream`)
+- `MainActivity.java`, `PWAMainMenuActivity.java`, `ScreenCastActivity.java`: Main entry points to the application providing navigation to the different features.
+- `PWAScreenCastClient.java`: Handles Screen Casting functionality in the PWA context.
+
+### Helper Classes (`com/studio08/xbgamestream/Helpers`)
+- `EncryptClient.java`: Handles generic encryption duties possibly for user credentials or settings.
+- `FileHelper.java`: Utility to read and write files within the application's storage.
+- `FirebaseAnalyticsClient.java`: Wrapper for Firebase to send user telemetry.
+- `Helper.java`: Generic catch-all helper methods for the application.
+- `IAPPricesManager.java`: Connects with billing services to fetch and display in-app purchase prices.
+- `KeyboardMovementCalculations.java`: Translates keyboard input into analog joystick movements.
+- `MediaPickerHelper.java`: Interfaces with Android's MediaStore to let users select local media files for casting.
+- `PWASettingsActivity.java`, `PWASettingsFragment.java`, `PWAWebviewHandler.java`: Settings and Webview handlers specifically for the Progressive Web App variant of the app.
+- `PopupWebview.java`: Displays generic web content (e.g., Privacy Policy, EULA) in a popup.
+- `PurchaseClient.java`: Manages the lifecycle of Google Play Billing purchases and subscription status.
+- `RewardedAdLoader.java`: Integrates with Ad Networks to load and display rewarded video ads.
+- `SettingsActivity.java`, `SettingsFragment.java`: The primary Android settings UI for the app.
+- `TWAClient.java`: Trusted Web Activity client, possibly used to launch web-based games or content.
+- `TutorialActivity.java`: Displays the first-time user tutorial.
 
 ### Gamepad UI Module (`studio09/gameconrtollerforxbox`)
 - `Gamepad.java`: A standalone activity providing a basic digital gamepad interface, interacting with `BindService` to send SmartGlass commands (e.g., d-pad, A/B/X/Y, Nexus).
