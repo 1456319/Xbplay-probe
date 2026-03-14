@@ -4,19 +4,26 @@ Xbox ONE Game Streaming App - Functionality Map
 This document classifies individual files and their likely purpose within the project, excluding standard open-source dependencies (e.g., Google, Facebook, Amazon, AndroidX, SpongyCastle, OkHttp).
 
 ### Authentication (`com/studio08/xbgamestream/Authenticate`)
-- Authentication activities and clients (`LoginActivity.java`, `LoginClient.java`, etc.): Responsible for presenting Xbox Live login screens, obtaining and renewing authentication tokens necessary for SmartGlass connection.
+- `LoginActivity.java`, `LoginActivityV4.java`: UI activities for presenting the Microsoft OAuth login flow to users.
+- `LoginClient.java`, `LoginClientV2.java`, `LoginClientV3.java`, `LoginClientV4.java`: API clients responsible for exchanging authorization codes for tokens, and renewing the Xbox Live authentication tokens required for SmartGlass connection. Multiple versions imply ongoing changes to the MS authentication APIs.
 
 ### Web View and Tokens (`com/studio08/xbgamestream/Web`)
-- WebViews and Web clients (`StreamWebview.java`, `ApiClient.java`, `SmartglassClient.java`): Used to render Microsoft OAuth login pages and interface with Xbox web APIs.
+- `ApiClient.java`, `SmartglassClient.java`: HTTP clients that interface with Microsoft and Xbox REST APIs for authentication, profile data, or title history.
+- `StreamWebview.java`, `StreamWebviewListener.java`: Custom WebView component to render the xCloud/game streaming website and intercept events.
+- `GeckoWebviewClient.java`, `BasicGeckoViewPrompt.java`: Implementations utilizing Mozilla's GeckoView engine (instead of standard Android WebView) likely for improved performance or compatibility with Microsoft's streaming web app.
+- `CustomWebClient.java`: A custom Chrome web client implementation.
+- `WifiClient.java`: Network utility to manage or verify local Wi-Fi connections before attempting to stream.
 
 ### Controller Input Handling (`com/studio08/xbgamestream/Controller`)
 - Local physical controller handlers (`ControllerHandler.java`, `RumbleHelper.java`, `InputDeviceContext.java`): Interfaces with Android's `InputDevice` APIs to read physical gamepad inputs, apply rumble feedback, and package the inputs into Nano `ControllerPacket`s.
+- `LocalService.java`: Bound service to keep the controller connection alive.
+- `Vector2d.java`: Math utility for parsing analog stick vectors.
 
 ### Controller Configuration (`com/studio08/xbgamestream/ControllerSetup`)
 - `ControllerConfigActivity.java`: Activity to set up and configure physical controller mappings.
 
 ### Media Servers (Casting) (`com/studio08/xbgamestream/Servers`)
-- Media Servers (`FileServer.java`, `Xbox360FileServer.java`, `TvServer.java`): Built-in local HTTP or UPnP/DLNA servers used to host local files for casting to the Xbox Media Player.
+- Media Servers (`FileServer.java`, `Xbox360FileServer.java`, `TvServer.java`, `Server.java`): Built-in local HTTP or UPnP/DLNA servers used to host local files for casting to the Xbox Media Player.
 
 ### License/Purchase Validation (`com/studio08/xbgamestream/Timers`)
 - `PurchaseChecker.java`, `PCheckInterface.java`: Logic for verifying app purchases, licenses, or premium status unlock.
@@ -40,13 +47,15 @@ This document classifies individual files and their likely purpose within the pr
 - `databinding/*`: Generated classes by Android's Data Binding Library connecting the layout XML files to their respective Fragments/Activities.
 
 ### Video Format Conversion (`com/studio08/xbgamestream/Converter`)
-- `VideoFormatConverter.java`, `ConvertForegroundService.java`: Logic potentially used to transcode or convert local media files into a format compatible with the Xbox Media Player before casting.
+- `VideoFormatConverter.java`: Implementation wrapping the FFmpegKit library to transcode incompatible video/audio codecs.
+- `ConvertForegroundService.java`: Keeps the app alive in the background while heavy video conversion processes are running.
 
 ### Media Casting (`com/studio08/xbgamestream/Cast`)
-- `CastOptionsProvider.java`, `MyExpandedControls.java`: Integrations for Google Cast or similar media casting protocols.
+- `CastOptionsProvider.java`: Provides the receiver application ID and settings for the Google Cast SDK.
+- `MyExpandedControls.java`: Activity that displays the expanded media controls (play, pause, seek bar) while a device is actively casting.
 
 ### Media Casting to Console (`com/studio08/xbgamestream/CastToConsole`)
-- `CastToConsoleForegroundService.java`: A background service managing the active media casting session to the Xbox console.
+- `CastToConsoleForegroundService.java`: An Android foreground service that maintains the DLNA/UPnP or HTTP streaming session to the Xbox Media Player, keeping it alive even if the user leaves the application.
 
 ### SmartGlass Cryptography (`crypto`)
 - `SgCrypto.java`: Implements Elliptic Curve Diffie-Hellman (ECDH) key exchange and AES-CBC encryption/decryption required to securely communicate with the Xbox console over the SmartGlass protocol.
