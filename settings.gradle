@@ -1,0 +1,2 @@
+rootProject.name = 'XbgamestreamRebuild'
+include ':app'
