@@ -303,7 +303,6 @@ for (var stream of streams) {
                     'Authorization': 'Bearer ' + token,
                 }
             }
-            console.log(JSON.stringify(init));
             fetch(url, init).then(response => {
                 if(response.status !== 200){
                     console.log('StreamClient.js: '+url+' - Waiting...');
