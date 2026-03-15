@@ -25,5 +25,6 @@ port.onMessage.addListener(response => {
 // from webpage to app
 document.addEventListener('geckoview-event', (event) => {
     console.log("Caught geckoview event", event.detail)
-    port.postMessage(JSON.stringify(event.detail));
+    const message = typeof event.detail === "string" ? event.detail : JSON.stringify(event.detail);
+    port.postMessage(message);
 })
