@@ -178,8 +178,6 @@ for (var stream of streams) {
                 videoSourceBuffer.addEventListener('error', (event) => {
                     console.log('xSDK - Error video...', event);
                 });
-
-               // this.#renderClient.video.videoSource = videoSourceBuffer
             }
         });
 
@@ -190,9 +188,6 @@ for (var stream of streams) {
         videoRender.width = videoHolder.clientWidth;
         videoRender.height = videoHolder.clientHeight;
         videoRender.play()
-
-        //this.#renderClient.video.mediaSource = mediaSource
-        //this.#renderClient.video.videoRender = videoRender
 
         videoHolder.appendChild(videoRender);
     }
