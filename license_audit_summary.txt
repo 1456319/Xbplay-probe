@@ -1,0 +1,13 @@
+License Audit Summary
+
+1. Analyze Dependencies: Analyzed libraries and third-party code bundled within the .apk files including:
+   - Google Play Services / Firebase, Facebook SDK, Amazon Web Services, Connect SDK, Ad Networks, SpongyCastle, OkHttp, WebRTC.
+   - Native Libraries including FFmpegKit and Mozilla GeckoView / NSS libraries.
+
+2. Review Licenses: Identified the following license details:
+   - Java/Kotlin Libraries: Mostly permissive licenses (Apache 2.0, MIT, BSD) that do not typically pose a risk of copyleft viral infection to the proprietary codebase.
+   - Native Libraries (JNI/C/C++):
+     - FFmpegKit (`libffmpegkit_abidetect.so`): HIGH RISK. Compiled with `--enable-gpl` and includes `libx264`, `libx265`, `libxvid`, and `libvidstab`. This subjects the entire application to the terms of the GPL, requiring open-sourcing of the proprietary codebase.
+     - Mozilla GeckoView / NSS libraries: LOW/MODERATE RISK. Licensed under MPL 2.0 or LGPL. These "weak copyleft" licenses allow dynamic linking with proprietary software provided certain conditions are met (e.g., attribution, ability to swap the LGPL library).
+
+3. Summary of Findings: The most critical issue is the inclusion of a GPL-compiled FFmpegKit library. To avoid violating the GPL and to maintain a proprietary closed-source commercial application, the current build of FFmpegKit MUST be replaced with one compiled strictly under the LGPL (without `--enable-gpl` and excluding GPL-only encoders/filters).
