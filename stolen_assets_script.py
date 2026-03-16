@@ -17,14 +17,13 @@ for f in files:
     report += f"- **SHA-256:** `{sha256_hash}`\n"
 
     if f.endswith(".html"):
-        with open(filepath, "r") as file:
-            text_content = file.read()
-            if "STREAM_VIEW_URL" in text_content:
-                report += "- Contains placeholder `STREAM_VIEW_URL`.\n"
-            if "gssv-play-prodxhome.xboxlive.com" in text_content:
-                report += "- **CRITICAL:** Contains proprietary Microsoft Xbox Cloud Gaming API endpoint (`gssv-play-prodxhome.xboxlive.com`). This strongly indicates unlicensed use of Microsoft's streaming infrastructure.\n"
-            if "xSDK client.js" in text_content:
-                report += "- **CRITICAL:** Contains logging strings referencing `xSDK client.js`, suggesting direct copying of Xbox streaming client logic.\n"
+        text_content = content.decode('utf-8', errors='ignore')
+        if "STREAM_VIEW_URL" in text_content:
+            report += "- Contains placeholder `STREAM_VIEW_URL`.\n"
+        if "gssv-play-prodxhome.xboxlive.com" in text_content:
+            report += "- **CRITICAL:** Contains proprietary Microsoft Xbox Cloud Gaming API endpoint (`gssv-play-prodxhome.xboxlive.com`). This strongly indicates unlicensed use of Microsoft's streaming infrastructure.\n"
+        if "xSDK client.js" in text_content:
+            report += "- **CRITICAL:** Contains logging strings referencing `xSDK client.js`, suggesting direct copying of Xbox streaming client logic.\n"
     elif f.endswith(".png"):
          report += "- Raw asset image extracted.\n"
 
