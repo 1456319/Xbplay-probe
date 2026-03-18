@@ -12,79 +12,123 @@ This document provides a comprehensive classification of the individual files an
 - `base.apk/assets/messaging/background.js`: Content script acting as a messaging bridge between the Android host and the GeckoView web view. Employs a recursive `isValidData` function to ensure only safe, plain objects and primitives are transferred via nativeMessaging and CustomEvents, preventing unsafe data cloning (such as functions or prototypes).
 - `base.apk/res/raw/omsdk_v_1_0.js`: Contains the IAB Open Measurement SDK (v1.3.30-iab3294), functioning as a tool for ad viewability measurement.
 
-### Authentication (`com/studio08/xbgamestream/Authenticate`)
-- `LoginActivity.java`, `LoginClient.java`: Manage Xbox Live login interfaces and the retrieval/renewal of authentication tokens necessary for SmartGlass connectivity.
-
-### Web View and Tokens (`com/studio08/xbgamestream/Web`)
-- `StreamWebview.java`, `ApiClient.java`, `SmartglassClient.java`: Responsible for rendering Microsoft OAuth login pages and interfacing with Xbox web APIs.
-
-### Controller Input Handling (`com/studio08/xbgamestream/Controller`)
-- `ControllerHandler.java`, `RumbleHelper.java`, `InputDeviceContext.java`: Interface with Android's `InputDevice` APIs. They read physical gamepad inputs, apply rumble feedback, and package the inputs into Nano `ControllerPacket` structures.
-
-### Controller Configuration (`com/studio08/xbgamestream/ControllerSetup`)
-- Components handling the configuration and mapping setup for connected physical and virtual input devices.
-
-### Media Servers (Casting) (`com/studio08/xbgamestream/Servers`)
-- `FileServer.java`, `Xbox360FileServer.java`, `TvServer.java`: Built-in local HTTP or UPnP/DLNA servers designed to host local files for casting to the Xbox Media Player.
-
-### License/Purchase Validation (`com/studio08/xbgamestream/Timers`)
-- `PurchaseChecker.java`, `PCheckInterface.java`: Implement logic for verifying application purchases, licenses, or premium status unlock mechanisms.
-
-### Home Screen Widgets (`com/studio08/xbgamestream/Widgets`)
-- `PowerWidgetProvider.java`, `RemoteWidgetProvider.java`: Android Home Screen widgets enabling basic console power management and media remote commands without requiring the full application interface.
-
-### User Interface Fragments (`com/studio08/xbgamestream/ui`)
-- `gamestream/GamestreamFragment.java`, `controller/ControllerFragment.java`, `remote/RemoteFragment.java`: Visual components (fragments) presenting views for streaming video, touch controls, and media casting interfaces.
-
-### Video Format Conversion (`com/studio08/xbgamestream/Converter`)
-- `VideoFormatConverter.java`, `ConvertForegroundService.java`: Components that manage the transcoding or conversion of local media files into formats compatible with the Xbox Media Player prior to casting.
-
-### Media Casting (`com/studio08/xbgamestream/Cast` & `CastToConsole`)
-- `CastOptionsProvider.java`, `MyExpandedControls.java`: Integrations for media casting protocols.
-- `CastToConsoleForegroundService.java`: A background service managing active media casting sessions to the Xbox console.
-
-### SmartGlass Cryptography (`crypto`)
-- `SgCrypto.java`: Executes Elliptic Curve Diffie-Hellman (ECDH) key exchange and AES-CBC encryption/decryption, satisfying the security requirements for SmartGlass protocol communication.
-
-### Network Services and Protocol Bridging (`network`)
-- `BindService.java`: A background Android Service bridging the application UI with the SmartGlass (`Xbox`) and Nano (`Nano`) clients. It manages connection states, controller sequences, and socket persistence.
-- `SmartGlass.java`, `Listeners.java`, `EventListener.java`: Define network configurations and event listener interfaces.
-
-### Nano Gamestream Core (`nano/base`)
-- `Nano.java`: Core Nano gamestream client managing UDP and TCP sockets, processing initial handshakes, and routing gamestream packets.
-- `VideoDecoder.java`: Utilizes Android's `MediaCodec` to decode the incoming H.264 video stream and render it to a `TextureView`.
-- `RTPHeader.java`, `StreamerHeader.java`, `ControlHeader.java`, `h264Frame.java`: Parsers designed to reconstruct video frames and read stream headers.
-
-### Nano Gamestream Channels (`nano/streams`)
-- `CoreStream.java`, `VideoStream.java`, `ControlStream.java`, `ControllerInputStream.java`: Handlers for multiplexed streams within the Gamestream session, separating control packets from video and input data.
-
-### Nano Gamestream Packets (`nano/packets`)
-- Packet definition classes (e.g., `InputFrame`, `VideoClientHandshake`) for serializing handshakes, control messages, and controller input frames.
-
-### Gamepad UI Module (`studio09/gameconrtollerforxbox`)
-- `Gamepad.java`: Standalone activity supplying a digital gamepad interface, which interacts with `BindService` to transmit SmartGlass commands.
-
-### Callback Interfaces (`Interfaces`)
-- `SmartglassEvents.java`, `NanoStreamEvents.java`, `XboxEvents.java`, `ChannelEvents.java`: Define the event signatures required to asynchronously communicate state changes between protocol implementations, services, and the UI.
-
-### Utility Functions (`util`)
-- `Util.java`: Supplies utility functions for byte array manipulation, UUID processing, endianness conversions, and hexadecimal formatting.
-
-### SmartGlass Channels (`channels`)
-- `SystemInputChannel.java`, `TextInputChannel.java`, `SystemBroadcastChannel.java`, `ChannelManager.java`: Responsible for processing specific subsets of SmartGlass communications, such as text entry and media remote controls.
-
-### SmartGlass Client Core (`xbox`)
-- `Xbox.java`: Main SmartGlass client executing console discovery, connection initiation, channel management, system input transmission, and power command handling.
-
-### SmartGlass Packets (`packet`)
-- `MessagePacket.java`, `SimplePacket.java`: Classes dedicated to structuring, serializing, and deserializing the binary packets utilized in the SmartGlass protocol.
-
-### Protocol Constants and Mappings (`constants`)
-- `PacketTypes.java`, `SystemInputButtonMappings.java`, `GameControllerButtonMappings.java`, `VideoFormat.java`, `ChannelTypes.java`: House fixed byte sequences, flags, and mappings that translate logical inputs into binary formats required by the console.
-
-### Application Root Activities (`app/src/main/java/com/studio08/xbgamestream/`)
-- `MainActivity.java`: A placeholder activity for the rebuilt project that attempts to load native JNI libraries (such as `gkcodecs`).
-
 ### Web Assets and Bridging Tests (`base.apk/assets/`)
 - `base.apk/assets/messaging/background.test.js`: Standalone test suite utilizing Node.js's native test runner to verify the behavior of the `background.js` messaging bridge.
 - `base.apk/assets/messaging/background.js`: Content script acting as a messaging bridge between the Android host and the GeckoView web view. It securely transfers JSON payloads and CustomEvents.
+
+### Authentication (`com/studio08/xbgamestream/Authenticate`)
+- `LoginActivity.java`, `LoginActivityV4.java`: UI activities for presenting the Microsoft OAuth login flow to users.
+- `LoginClient.java`, `LoginClientV2.java`, `LoginClientV3.java`, `LoginClientV4.java`: API clients responsible for exchanging authorization codes for tokens, and renewing the Xbox Live authentication tokens required for SmartGlass connection. Multiple versions imply ongoing changes to the MS authentication APIs.
+
+### Web View and Tokens (`com/studio08/xbgamestream/Web`)
+- `ApiClient.java`, `SmartglassClient.java`: HTTP clients that interface with Microsoft and Xbox REST APIs for authentication, profile data, or title history.
+- `StreamWebview.java`, `StreamWebviewListener.java`: Custom WebView component to render the xCloud/game streaming website and intercept events.
+- `GeckoWebviewClient.java`, `BasicGeckoViewPrompt.java`: Implementations utilizing Mozilla's GeckoView engine (instead of standard Android WebView) likely for improved performance or compatibility with Microsoft's streaming web app.
+- `CustomWebClient.java`: A custom Chrome web client implementation.
+- `WifiClient.java`: Network utility to manage or verify local Wi-Fi connections before attempting to stream.
+
+### Controller Input Handling (`com/studio08/xbgamestream/Controller`)
+- Local physical controller handlers (`ControllerHandler.java`, `RumbleHelper.java`, `InputDeviceContext.java`): Interfaces with Android's `InputDevice` APIs to read physical gamepad inputs, apply rumble feedback, and package the inputs into Nano `ControllerPacket`s.
+- `LocalService.java`: Bound service to keep the controller connection alive.
+- `Vector2d.java`: Math utility for parsing analog stick vectors.
+
+### Controller Configuration (`com/studio08/xbgamestream/ControllerSetup`)
+- `ControllerConfigActivity.java`: Activity to set up and configure physical controller mappings.
+
+### Media Servers (Casting) (`com/studio08/xbgamestream/Servers`)
+- Media Servers (`FileServer.java`, `Xbox360FileServer.java`, `TvServer.java`, `Server.java`): Built-in local HTTP or UPnP/DLNA servers used to host local files for casting to the Xbox Media Player.
+
+### License/Purchase Validation (`com/studio08/xbgamestream/Timers`)
+- `PurchaseChecker.java`, `PCheckInterface.java`: Logic for verifying app purchases, licenses, or premium status unlock.
+
+### Home Screen Widgets (`com/studio08/xbgamestream/Widgets`)
+- `PowerWidgetProvider.java`, `RemoteWidgetProvider.java`: Android Home Screen widgets that allow users to power on/off the console or send basic media remote commands without opening the full app.
+
+### User Interface Fragments (`com/studio08/xbgamestream/ui` and `databinding`)
+- `AndroidTvFragment.java`: UI for connecting and managing an Android TV target.
+- `ControllerBuilderFragment.java`, `ControllerBuilderViewModel.java`: Interface to customize the layout and appearance of on-screen virtual controls.
+- `ControllerFragment.java`, `ControllerViewModel.java`: Displays and manages the state of the default virtual on-screen game controller.
+- `MoreFeaturesFragment.java`: A menu for additional or premium features within the app.
+- `AudioCastFragment.java`, `CastMediaRemoteFragment.java`, `FileCastFragment.java`: Interfaces for selecting local media and controlling playback when casting to the console.
+- `GamestreamFragment.java`, `GamestreamViewModel.java`: The primary view that displays the live video feed during an active game streaming session.
+- `HomeFragment.java`, `HomeViewModel.java`: The main dashboard view presented to the user after login.
+- `MirrorCastFragment.java`: Interface for casting the entire Android device screen to the console.
+- `RemoteFragment.java`: Provides media remote controls (play, pause, navigation) acting as a virtual TV remote.
+- `TVCastFragment.java`: Dedicated interface for casting live TV streams or IPTV links.
+- `WidgetsFragment.java`: Interface explaining or managing the Android Home Screen widgets.
+- `XcloudFragment.java`: A web wrapper or deep link interface specifically for accessing Microsoft's xCloud game streaming service.
+- `databinding/*`: Generated classes by Android's Data Binding Library connecting the layout XML files to their respective Fragments/Activities.
+
+### Video Format Conversion (`com/studio08/xbgamestream/Converter`)
+- `VideoFormatConverter.java`, `ConvertForegroundService.java`: Components that manage the transcoding or conversion of local media files into formats compatible with the Xbox Media Player prior to casting.
+- `ConvertForegroundService.java`: Keeps the app alive in the background while heavy video conversion processes are running.
+
+### Media Casting (`com/studio08/xbgamestream/Cast`)
+- `CastOptionsProvider.java`: Provides the receiver application ID and settings for the Google Cast SDK.
+- `MyExpandedControls.java`: Activity that displays the expanded media controls (play, pause, seek bar) while a device is actively casting.
+
+### Media Casting to Console (`com/studio08/xbgamestream/CastToConsole`)
+- `CastToConsoleForegroundService.java`: An Android foreground service that maintains the DLNA/UPnP or HTTP streaming session to the Xbox Media Player, keeping it alive even if the user leaves the application.
+
+### SmartGlass Cryptography (`crypto`)
+- `SgCrypto.java`: Implements Elliptic Curve Diffie-Hellman (ECDH) key exchange and AES-CBC encryption/decryption required to securely communicate with the Xbox console over the SmartGlass protocol.
+
+### Network Services and Protocol Bridging (`network`)
+- `BindService.java`: An Android Service running in the background acting as the central bridge between the app UI and the SmartGlass (`Xbox`) / Nano (`Nano`) clients. It manages controller sequences, connection state, and keeps the sockets alive.
+- `SmartGlass.java`, `Listeners.java`, `EventListener.java`: Network and event listener interfaces.
+
+### Nano Gamestream Core (`nano/base`)
+- `Nano.java`: Core Nano gamestream client that manages UDP and TCP sockets, handling the initial handshake and routing gamestream packets to appropriate stream handlers.
+- `VideoDecoder.java`: Implements Android's `MediaCodec` to decode the H264 video stream received from the Xbox and renders it to a `TextureView`.
+- `RTPHeader.java`, `StreamerHeader.java`, `ControlHeader.java`, `h264Frame.java`: Parsers for stream headers and video frame reconstruction.
+
+### Nano Gamestream Channels (`nano/streams`)
+- `CoreStream.java`, `VideoStream.java`, `ControlStream.java`, `ControllerInputStream.java`: Handlers for the distinct multiplexed streams within the Gamestream session, isolating control packets from video or input packets.
+
+### Nano Gamestream Packets (`nano/packets`)
+- Nano gamestream packet definitions (`send/`, `response/`): Classes for handshakes, control protocol messages, and formatting controller input frames (e.g., `InputFrame`, `VideoClientHandshake`).
+
+### Nano Gamestream Components (`nano`)
+- `GameController.java`, `GameControllerButtonModel.java`: Models representing the state and inputs of the virtual or physical game controller for gamestreaming.
+
+### Application Root Activities (`com/studio08/xbgamestream`)
+- `MainActivity.java`, `PWAMainMenuActivity.java`, `ScreenCastActivity.java`: Main entry points to the application providing navigation to the different features.
+- `PWAScreenCastClient.java`: Handles Screen Casting functionality in the PWA context.
+
+### Helper Classes (`com/studio08/xbgamestream/Helpers`)
+- `EncryptClient.java`: Handles generic encryption duties possibly for user credentials or settings.
+- `FileHelper.java`: Utility to read and write files within the application's storage.
+- `FirebaseAnalyticsClient.java`: Wrapper for Firebase to send user telemetry.
+- `Helper.java`: Generic catch-all helper methods for the application.
+- `IAPPricesManager.java`: Connects with billing services to fetch and display in-app purchase prices.
+- `KeyboardMovementCalculations.java`: Translates keyboard input into analog joystick movements.
+- `MediaPickerHelper.java`: Interfaces with Android's MediaStore to let users select local media files for casting.
+- `PWASettingsActivity.java`, `PWASettingsFragment.java`, `PWAWebviewHandler.java`: Settings and Webview handlers specifically for the Progressive Web App variant of the app.
+- `PopupWebview.java`: Displays generic web content (e.g., Privacy Policy, EULA) in a popup.
+- `PurchaseClient.java`: Manages the lifecycle of Google Play Billing purchases and subscription status.
+- `RewardedAdLoader.java`: Integrates with Ad Networks to load and display rewarded video ads.
+- `SettingsActivity.java`, `SettingsFragment.java`: The primary Android settings UI for the app.
+- `TWAClient.java`: Trusted Web Activity client, possibly used to launch web-based games or content.
+- `TutorialActivity.java`: Displays the first-time user tutorial.
+
+### Gamepad UI Module (`studio09/gameconrtollerforxbox`)
+- `Gamepad.java`: A standalone activity providing a basic digital gamepad interface, interacting with `BindService` to send SmartGlass commands (e.g., d-pad, A/B/X/Y, Nexus).
+
+### Callback Interfaces (`Interfaces`)
+- Callback interfaces (`SmartglassEvents.java`, `NanoStreamEvents.java`, `XboxEvents.java`, `ChannelEvents.java`): Define the event signatures used to communicate state changes asynchronously between the protocol implementations and the UI or Services.
+
+### Utility Functions (`util`)
+- `Util.java`: Utility functions for byte array manipulation, UUID processing, endianness conversions, and hexadecimal string formatting.
+
+### SmartGlass Channels (`channels`)
+- SmartGlass communication channels (e.g., `SystemInputChannel.java`, `TextInputChannel.java`, `SystemBroadcastChannel.java`, `ChannelManager.java`): Responsible for handling specific subsets of SmartGlass communications such as media remote controls and text entry.
+
+### SmartGlass Client Core (`xbox`)
+- `Xbox.java`: Main SmartGlass client responsible for discovering the console, initiating connections, opening channels, sending system inputs, handling power commands (Wake/PowerOff), and listening for packet responses.
+
+### SmartGlass Packets (`packet`)
+- SmartGlass packet definitions (`send/`, `receive/`, `MessagePacket.java`, `SimplePacket.java`): Classes dedicated to structuring, serializing, and deserializing the binary packets used in the SmartGlass protocol (Discovery, Connection, Gamestream Start/Stop, Acknowledgment).
+
+### Protocol Constants and Mappings (`constants`)
+- Protocol constants and binary mappings (`PacketTypes.java`, `SystemInputButtonMappings.java`, `GameControllerButtonMappings.java`, `VideoFormat.java`, `ChannelTypes.java`): Contains fixed byte sequences, flags, and mappings translating human-readable button presses into the binary formats expected by the console.
+
