@@ -3,7 +3,7 @@
 ## File Hashes and Proprietary Strings
 
 ### old.html
-- **SHA-256:** `354f56b45478497c045a7423d9bb2ff98629fa06fef6d6ba758613794b647bf9`
+- **SHA-256:** `d3e065c43e98b4f9711a6f756bbea0e2f11fcf9ebad4f3c76aa1538abcf0947c`
 - **CRITICAL:** Contains proprietary Microsoft Xbox Cloud Gaming API endpoint (`gssv-play-prodxhome.xboxlive.com`). This strongly indicates unlicensed use of Microsoft's streaming infrastructure.
 - **CRITICAL:** Contains logging strings referencing `xSDK client.js`, suggesting direct copying of Xbox streaming client logic.
 
