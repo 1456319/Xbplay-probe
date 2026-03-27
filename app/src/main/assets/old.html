@@ -9,6 +9,12 @@
 
 const video = document.querySelector("video");
 
+function validateSecurityInput(input) {
+    if (typeof input !== 'string' || /[\x00-\x1F\x7F]/.test(input)) {
+        throw new Error('Invalid security input');
+    }
+}
+
 console.log("STARTING GAMESTREAM JS");
     const webrtcDataChannels = {};
 
@@ -197,13 +203,15 @@ for (var stream of streams) {
         videoHolder.appendChild(videoRender);
     }
     function sendIce(ice, sessionId, token){
+        validateSecurityInput(sessionId);
+        validateSecurityInput(token);
         return new Promise((resolve, reject) => {
             const postData = {
                 "messageType": "iceCandidate",
                 "candidate": ice
             }
 
-            fetch('https://uks.gssv-play-prodxhome.xboxlive.com/v4/sessions/home/'+ sessionId + '/ice', {
+            fetch('https://uks.gssv-play-prodxhome.xboxlive.com/v4/sessions/home/'+ encodeURIComponent(sessionId) + '/ice', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json',
@@ -223,6 +231,8 @@ for (var stream of streams) {
     }
 
     async function sendSdp(sdp, sessionId, token) {
+        validateSecurityInput(sessionId);
+        validateSecurityInput(token);
         return new Promise((resolve, reject) => {
             const postData = {
                 "messageType":"offer",
@@ -269,7 +279,7 @@ for (var stream of streams) {
 
             // const streamClient = this
 
-            fetch('https://uks.gssv-play-prodxhome.xboxlive.com/v4/sessions/home/'+ sessionId +'/sdp', {
+            fetch('https://uks.gssv-play-prodxhome.xboxlive.com/v4/sessions/home/'+ encodeURIComponent(sessionId) +'/sdp', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json',
@@ -290,12 +300,15 @@ for (var stream of streams) {
 
     // functions
     async function isExchangeReady(path, sessionId, token, retries = 5) {
+        validateSecurityInput(path);
+        validateSecurityInput(sessionId);
+        validateSecurityInput(token);
         if (retries < 1) {
             throw new Error("Exchange not ready" + path)
         }
         return new Promise((resolve, reject) => {
 
-            const url = "https://uks.gssv-play-prodxhome.xboxlive.com/v4/sessions/home/"+sessionId+'/'+path
+            const url = "https://uks.gssv-play-prodxhome.xboxlive.com/v4/sessions/home/"+encodeURIComponent(sessionId)+'/'+encodeURIComponent(path)
             const init = {
                 method: 'GET',
                 headers: {
