@@ -13,10 +13,7 @@ port.onMessage.addListener(response => {
         var event = new CustomEvent('geckoview', { detail: clonedDetail });
         document.dispatchEvent(event);
 
-        // log data and echo back to android
         console.log("Dispatched geckoview event!");
-        // why was I echoing message back to the app after sending to app??
-//        port.postMessage(JSON.stringify(response));
     } catch (err){
         console.error("Geckoview emit error", err)
     }
