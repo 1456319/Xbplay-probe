@@ -1,3 +1,4 @@
+/* This content script acts as a messaging bridge between the Android host and the GeckoView web view. It securely transfers JSON payloads and CustomEvents, employing a recursive isValidData function to ensure only safe, plain objects and primitives are transferred via nativeMessaging, preventing unsafe data cloning (such as functions or prototypes). */
 let port = browser.runtime.connectNative("browser");
 
 // from app to webpage

@@ -88,3 +88,7 @@ This document provides a comprehensive classification of the individual files an
 ### Web Assets and Bridging Tests (`base.apk/assets/`)
 - `base.apk/assets/messaging/background.test.js`: Standalone test suite utilizing Node.js's native test runner to verify the behavior of the `background.js` messaging bridge.
 - `base.apk/assets/messaging/background.js`: Content script acting as a messaging bridge between the Android host and the GeckoView web view. It securely transfers JSON payloads and CustomEvents.
+
+
+### Other Web Assets (`extracted_assets/`)
+- `play-anywhere.html`: A web asset containing a placeholder `STREAM_VIEW_URL`.
