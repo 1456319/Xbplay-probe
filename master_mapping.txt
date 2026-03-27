@@ -90,5 +90,12 @@ This document provides a comprehensive classification of the individual files an
 - `base.apk/assets/messaging/background.js`: Content script acting as a messaging bridge between the Android host and the GeckoView web view. It securely transfers JSON payloads and CustomEvents.
 
 
+
 ### Other Web Assets (`extracted_assets/`)
+- `old.html`: A mirror of the `base.apk/assets/old.html` front-end web asset.
 - `play-anywhere.html`: A web asset containing a placeholder `STREAM_VIEW_URL`.
+
+### App Specific Assets (`app/src/main/assets/`)
+- `old.html`: A mirrored web asset implementing Microsoft Xbox Cloud Gaming SDK client logic and WebRTC connections.
+- `play-anywhere.html`: A web asset containing a placeholder `STREAM_VIEW_URL`.
+- `messaging/background.js`: A mirrored content script handling GeckoView nativeMessaging bridging.
