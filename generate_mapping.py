@@ -1,6 +1,3 @@
-import os
-import re
-
 STOLEN_ASSETS = [
     "libffmpegkit_abidetect.so",
     "old.html",
