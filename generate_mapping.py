@@ -10,11 +10,12 @@ STOLEN_ASSETS = [
     "xSDK client.js"
 ]
 
+# Pre-compile the regex for efficient substring search
+_STOLEN_PATTERN = re.compile("|".join(re.escape(asset) for asset in STOLEN_ASSETS))
+
 def is_stolen(path):
-    for asset in STOLEN_ASSETS:
-        if asset in path:
-            return True
-    return False
+    """Checks if a given path contains any of the stolen asset patterns."""
+    return bool(_STOLEN_PATTERN.search(path))
 
 def get_likely_purpose(path):
     lower_path = path.lower()
