@@ -197,7 +197,7 @@ for (var stream of streams) {
 
         videoHolder.appendChild(videoRender);
     }
-    function sendIce(ice, sessionId, token){
+    async function sendIce(ice, sessionId, token){
         validateSecurityInput(sessionId);
         validateSecurityInput(token);
         return new Promise((resolve, reject) => {
