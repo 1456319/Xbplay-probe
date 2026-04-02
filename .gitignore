@@ -5,3 +5,5 @@ jadx-1.4.7.zip
 app/build/
 local.properties
 .gradle/
+__pycache__/
+*.pyc
